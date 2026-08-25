@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BassoumClim — Installation & entretien</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header>
+  <a class="logo" href="#">Bassoum<span>Clim</span></a>
+  <nav><a href="#services">Services</a><a href="#demande">Demande</a></nav>
+  <button class="btn" id="authBtn" type="button">Connexion</button>
+</header>
+
+<section class="hero">
+  <div>
+    <small>BASSOUMCLIM</small>
+    <h1>Votre climatisation.<br><span>Notre expertise.</span></h1>
+    <p>Installation et entretien de climatiseurs avec des techniciens fiables.</p>
+    <a class="btn" href="#demande">Demander une intervention →</a>
+  </div>
+  <div class="heroCard">
+    <div class="snow">❄️</div>
+    <h2>Besoin d'un technicien ?</h2>
+    <p>Connectez-vous et envoyez votre demande.</p>
+    <a class="heroLink" href="#demande">Commencer →</a>
+  </div>
+</section>
+
+<section id="services">
+  <h2>Nos services</h2>
+  <div class="cards">
+    <article><div class="serviceIcon">🧰</div><h3>Installation</h3><p>Installation professionnelle de climatiseurs.</p></article>
+    <article><div class="serviceIcon">🧼</div><h3>Entretien</h3><p>Nettoyage et maintenance de votre appareil.</p></article>
+  </div>
+</section>
+
+<section id="demande" class="requestSection">
+  <div>
+    <small>DEMANDE D'INTERVENTION</small>
+    <h2>Décrivez votre besoin.</h2>
+    <p id="hint">Connectez-vous pour envoyer une demande sécurisée.</p>
+  </div>
+  <form id="requestForm">
+    <label>Service
+      <select id="service" required>
+        <option value="installation">Installation</option>
+        <option value="entretien">Entretien</option>
+      </select>
+    </label>
+    <label>Téléphone<input id="phone" type="tel" required placeholder="+221..."></label>
+    <label>Adresse<input id="address" required placeholder="Ville, quartier, adresse"></label>
+    <label>Date souhaitée<input id="date" type="datetime-local"></label>
+    <label>Description<textarea id="description" required rows="4" placeholder="Décrivez votre besoin"></textarea></label>
+    <button class="btn" type="submit">Envoyer ma demande →</button>
+    <p id="formMsg" role="status"></p>
+  </form>
+</section>
+
+<div class="modal hidden" id="modal" aria-hidden="true">
+  <div class="box">
+    <button class="close" id="close" type="button" aria-label="Fermer">×</button>
+
+    <div id="login">
+      <h2>Connexion</h2>
+      <form id="loginForm">
+        <input id="email" type="email" placeholder="E-mail" required>
+        <input id="password" type="password" placeholder="Mot de passe" required>
+        <button class="btn" type="submit">Se connecter</button>
+      </form>
+      <p id="loginMsg" role="status"></p>
+      <p>Pas de compte ? <button class="link" id="signupLink" type="button">Créer un compte</button></p>
+    </div>
+
+    <div id="signup" class="hidden">
+      <h2>Créer un compte</h2>
+      <form id="signupForm">
+        <input id="first" placeholder="Prénom" required>
+        <input id="last" placeholder="Nom">
+        <input id="sphone" type="tel" placeholder="Téléphone" required>
+        <input id="semail" type="email" placeholder="E-mail" required>
+        <input id="spass" type="password" minlength="6" placeholder="Mot de passe" required>
+        <button class="btn" type="submit">Créer mon compte</button>
+      </form>
+      <p id="signupMsg" role="status"></p>
+      <p>Déjà un compte ? <button class="link" id="loginLink" type="button">Connexion</button></p>
+    </div>
+  </div>
+</div>
+
+<footer>BassoumClim — Installation & entretien de climatisation</footer>
+<script src="app.js"></script>
+</body>
+</html>
