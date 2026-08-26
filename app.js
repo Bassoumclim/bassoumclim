@@ -1,5 +1,29 @@
 const URL='https://hbigfogqrjobawzdbdue.supabase.co',KEY='sb_publishable_LRAkisi90QWpd60uheIFkA_8cZmuACl';const sb=supabase.createClient(URL,KEY),$=x=>document.getElementById(x);let user=null,profile=null;const L={pending:'En attente',accepted:'Acceptée',quoted:'Devis reçu',scheduled:'Planifiée',in_progress:'En cours',completed:'Terminée',rejected:'Refusée',cancelled:'Annulée'};const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const badge=s=>`<span class="badge ${s==='completed'?'ok':s==='pending'||s==='quoted'?'warn':s==='rejected'||s==='cancelled'?'bad':''}">${L[s]||s}</span>`;const money=n=>Number(n||0).toLocaleString('fr-FR')+' FCFA';
-function modal(v){$('modal').classList.toggle('hidden',!v)}$('authBtn').onclick=()=>modal(1);$('close').onclick=()=>modal(0);$('toSignup').onclick=()=>{$('login').classList.add('hidden');$('signup').classList.remove('hidden')};$('toLogin').onclick=()=>{$('signup').classList.add('hidden');$('login').classList.remove('hidden')};$('logoutBtn').onclick=async()=>{await sb.auth.signOut();location.reload()};$('dashBtn').onclick=()=>{$('dashboard').classList.remove('hidden');$('dashboard').scrollIntoView({behavior:'smooth'});render()};
+function modal(v){$('modal').classList.toggle('hidden',!v)}document.addEventListener('DOMContentLoaded', () => {
+  const authBtn = document.getElementById('authBtn');
+  const modal = document.getElementById('modal');
+  const closeBtn = document.getElementById('close');
+
+  if (authBtn) {
+    authBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  }
+});$('close').onclick=()=>modal(0);$('toSignup').onclick=()=>{$('login').classList.add('hidden');$('signup').classList.remove('hidden')};$('toLogin').onclick=()=>{$('signup').classList.add('hidden');$('login').classList.remove('hidden')};$('logoutBtn').onclick=async()=>{await sb.auth.signOut();location.reload()};$('dashBtn').onclick=()=>{$('dashboard').classList.remove('hidden');$('dashboard').scrollIntoView({behavior:'smooth'});render()};
 async function getProfile(u){let {data}=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();return data||{id:u.id,role:'client',first_name:u.user_metadata?.first_name,last_name:u.user_metadata?.last_name}}
 async function init(){let {data:{session}}=await sb.auth.getSession();user=session?.user||null;if(user){profile=await getProfile(user);$('authBtn').classList.add('hidden');$('userMenu').classList.remove('hidden');$('dashboard').classList.remove('hidden');$('role').textContent=profile.role==='admin'?'ADMINISTRATION':profile.role==='technicien'?'ESPACE TECHNICIEN':'ESPACE CLIENT';$('welcome').textContent='Bienvenue '+(profile.first_name||'');$('hint').textContent='Vous êtes connecté.';render()}else{$('authBtn').classList.remove('hidden');$('userMenu').classList.add('hidden')}}sb.auth.onAuthStateChange(()=>setTimeout(init,0));
 $('signupForm').onsubmit=async e=>{e.preventDefault();$('signupMsg').textContent='Création...';let {data,error}=await sb.auth.signUp({email:$('semail').value.trim(),password:$('spass').value,options:{data:{first_name:$('first').value.trim(),last_name:$('last').value.trim(),phone:$('sphone').value.trim()},emailRedirectTo:location.origin}});if(error)return $('signupMsg').textContent=error.message;$('signupMsg').textContent=data.session?'✓ Compte créé':'✓ Vérifiez votre e-mail pour confirmer votre compte.'};$('loginForm').onsubmit=async e=>{e.preventDefault();let {error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('loginMsg').textContent=error?error.message:'✓ Connexion réussie';if(!error)setTimeout(()=>modal(0),300)};
